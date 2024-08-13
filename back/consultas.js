@@ -98,9 +98,9 @@ const updateEvento = async (id, evento) => {
 
     sqlQuery += "WHERE id = $1 RETURNING *"
 
-    const { rows: [evento] } = await pool.query(sqlQuery, [id])
+    const { rows: [eventoUpadted] } = await pool.query(sqlQuery, [id])
 
-    return evento
+    return eventoUpadted
 }
 
 module.exports = {
