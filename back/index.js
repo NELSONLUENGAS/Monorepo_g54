@@ -68,7 +68,14 @@ app.delete("/eventos/:id", async (req, res) => {
         const { id } = req.params
         const Authorization = req.header("Authorization")
 
-        const token = Authorization.split("Bearer ")[1]
+        const token = Authorization?.split("Bearer ")[1]
+
+        if (!token) {
+            let tokenError = new Error('Token requerido')
+            tokenError.code = 400
+
+            throw tokenError;
+        }
 
         jwt.verify(token, "Token_secret")
 
