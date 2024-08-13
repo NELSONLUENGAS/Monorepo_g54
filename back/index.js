@@ -14,7 +14,7 @@ const {
     pool,
     initDatabase
 } = require('./consultas')
-const { validateLogin } = require('./middleware')
+const { validateLogin, validateRegsiter } = require('./middleware')
 
 app.listen(3000, async () => {
     console.log("SERVER ON")
@@ -116,7 +116,7 @@ app.put("/eventos/:id", async (req, res) => {
     }
 })
 
-app.post('/register', async (req, res) => {
+app.post('/register', validateRegsiter, async (req, res) => {
     try {
         const { email, password } = req.body
         await createUser(email, password)

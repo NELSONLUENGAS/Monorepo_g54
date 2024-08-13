@@ -40,5 +40,6 @@ const validateRegsiter = [
 
 
 module.exports = {
-    validateLogin
+    validateLogin,
+    validateRegsiter
 }
