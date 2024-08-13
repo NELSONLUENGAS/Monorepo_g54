@@ -84,6 +84,25 @@ const verifyIfExist = async (id) => {
     return Boolean(evento)
 }
 
+const updateEvento = async (id, evento) => {
+
+    let sqlQuery = "UPDATE eventos SET "
+    let dataToupdate = []
+
+    Object.entries(evento).forEach(prop => {
+        const toUpdate = `${prop[0]} = ${prop[1]}`
+        dataToupdate.push(toUpdate)
+    })
+
+    sqlQuery += dataToupdate.join(', ')
+
+    sqlQuery += "WHERE id = $1 RETURNING *"
+
+    const { rows: [evento] } = await pool.query(sqlQuery, [id])
+
+    return evento
+}
+
 module.exports = {
     getEventos,
     deleteEvento,
@@ -93,5 +112,6 @@ module.exports = {
     crearEvento,
     verifyIfExist,
     initDatabase,
+    updateEvento,
     pool
 }

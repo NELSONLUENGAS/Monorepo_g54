@@ -93,6 +93,7 @@ app.delete("/eventos/:id", async (req, res) => {
 app.put("/eventos/:id", async (req, res) => {
     try {
         const { id } = req.params
+        const evento = req.body
 
         const exist = await verifyIfExist(id)
         if (!exist) {
@@ -107,7 +108,7 @@ app.put("/eventos/:id", async (req, res) => {
 
             const { email } = jwt.decode(token)
 
-            // await deleteEvento(id)
+            await updateEvento(id, evento)
             res.send(`El usuario ${email} ha actualizado el evento de id ${id}`)
         }
 
