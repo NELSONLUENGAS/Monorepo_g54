@@ -73,6 +73,7 @@ app.delete("/eventos/:id", async (req, res) => {
         if (!token) {
             let tokenError = new Error('Token requerido')
             tokenError.code = 400
+            tokenError.msg = tokenError.message
 
             throw tokenError;
         }
