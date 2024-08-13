@@ -44,18 +44,25 @@ const deleteEvento = async (id) => {
 }
 
 const createUser = async (email, password) => {
-    const consulta = `INSERT INTO usuarios
-    values(
-        DEFAULT,
-        $1,
-        $2
-    ) RETURNING *`
 
-    const passwordHash = await bcrypt.hash(password, 20)
-    console.log(passwordHash)
-    const values = [email, passwordHash];
-    const { rowCount } = await pool.query(consulta, values)
-    if (!rowCount) throw { code: 400, message: "Bad request" }
+    try {
+
+        const consulta = `INSERT INTO usuarios
+        values(
+            DEFAULT,
+            $1,
+            $2
+        ) RETURNING *`
+
+        const passwordHash = await bcrypt.hash(password, 20)
+        console.log(passwordHash)
+        const values = [email, passwordHash];
+        const { rowCount } = await pool.query(consulta, values)
+        if (!rowCount) throw { code: 400, message: "Bad request" }
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
 }
 
 const verificarCredencialesHash = async (email, password) => {
