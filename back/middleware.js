@@ -22,6 +22,23 @@ const validateLogin = [
     }
 ]
 
+
+const validateRegsiter = [
+    body('email').notEmpty().withMessage('Debería usar un email').isEmail().withMessage('Debería usar un formato correcto'),
+    body('password').notEmpty().withMessage('Debería usar una contraseña'),
+    (req, res, next) => {
+        const errors = validationResult(req).mapped()
+
+        if (Object.keys(errors).length) {
+            res.status(400).send(errors)
+        } else {
+            next()
+        }
+    }
+]
+
+
+
 module.exports = {
     validateLogin
 }
