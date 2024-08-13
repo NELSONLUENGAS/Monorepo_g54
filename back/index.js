@@ -53,7 +53,7 @@ app.post("/login", validateLogin, async (req, res) => {
         const { email, password } = req.body
         await verificarCredencialesHash(email, password)
 
-        const token = jwt.sign({ email }, "Token_secret", { expiresIn: '1 day' })
+        const token = jwt.sign({ email }, String(process.env.TOKEN_SECRET), { expiresIn: '1 day' })
 
         res.send(token)
     } catch (error) {
@@ -78,7 +78,7 @@ app.delete("/eventos/:id", async (req, res) => {
             throw tokenError;
         }
 
-        jwt.verify(token, "Token_secret")
+        jwt.verify(token, String(process.env.TOKEN_SECRET))
 
         const { email } = jwt.decode(token)
 
