@@ -43,18 +43,17 @@ const deleteEvento = async (id) => {
     if (!rowCount) throw { code: 404, message: "No se encontró ningún evento con este ID" }
 }
 
-const createUser = async (email, password, role = 'admin') => {
+const createUser = async (email, password) => {
     const consulta = `INSERT INTO usuarios
     values(
         DEFAULT,
         $1,
-        $2,
-        $3
+        $2
     ) RETURNING *`
 
     const passwordHash = await bcrypt.hash(password, 20)
     console.log(passwordHash)
-    const values = [email, passwordHash, role];
+    const values = [email, passwordHash];
     const { rowCount } = await pool.query(consulta, values)
     if (!rowCount) throw { code: 400, message: "Bad request" }
 }
