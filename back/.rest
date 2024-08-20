@@ -1,5 +1,6 @@
 ###REGISTER
-POST http://localhost:3000/register
+# POST http://localhost:3000/register
+POST https://monorepo-g54.onrender.com/login
 
 {
     "email": "test@test.com"

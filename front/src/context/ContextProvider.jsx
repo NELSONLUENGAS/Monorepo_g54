@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { handleDecrypt, handleEncrypt } from '../helpers/helpers';
 const { VITE_SERVER_URL } = import.meta.env;
 
 export const PokeContext = createContext();
@@ -8,7 +9,9 @@ const ContextProvider = ({ children }) => {
 	const [userSession, setUsersSession] = useState(null);
 
 	const [token, setToken] = useState(
-		localStorage.getItem('token') ? localStorage.getItem('token') : null
+		localStorage.getItem('token')
+			? JSON.parse(handleDecrypt(localStorage.getItem('token')))
+			: null
 	);
 
 	const [login, setLogin] = useState({
@@ -68,7 +71,7 @@ const ContextProvider = ({ children }) => {
 
 		console.log(data);
 		setToken(data);
-		localStorage.setItem('token', data);
+		localStorage.setItem('token', handleEncrypt(data));
 	};
 
 	const dispatchCreateRegister = async (event) => {
