@@ -11,9 +11,42 @@ export function Header() {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
-						<Link to={'/'}>Home Page</Link>
-						<Link to={'/perfil'}>Perfil</Link>
-						<Link to={'/dashboard'}>Dashboard</Link>
+						<Link
+							className="px-2"
+							to={'/'}
+						>
+							Home Page
+						</Link>
+						<Link
+							className="px-2"
+							to={'/perfil'}
+						>
+							Perfil
+						</Link>
+						<Link
+							className="px-2"
+							to={'/dashboard'}
+						>
+							Dashboard
+						</Link>
+						<Link
+							className="px-2"
+							to={'/login'}
+						>
+							Login
+						</Link>
+						<Link
+							className="px-2"
+							to={'/register'}
+						>
+							Register
+						</Link>
+						<Link
+							className="px-2"
+							to={'/events'}
+						>
+							Events
+						</Link>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>

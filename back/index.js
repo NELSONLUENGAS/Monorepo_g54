@@ -121,7 +121,10 @@ app.post('/register', validateRegsiter, async (req, res) => {
     try {
         const { email, password } = req.body
         await createUser(email, password)
-        res.send('Usuario creado')
+        res.json({
+            ok: true,
+            msg: 'Usuario Creado'
+        })
     } catch (error) {
         res.status(error.code || 500).send(error)
     }
@@ -132,9 +135,12 @@ app.post('/eventos', async (req, res) => {
     try {
 
         const evento = req.body
-        res.json(await crearEvento(evento))
+
+        const reponse = await crearEvento(evento)
+        res.json(reponse)
 
     } catch (error) {
+        console.log(error)
         res.status(error.code || 500).send(error)
     }
 })

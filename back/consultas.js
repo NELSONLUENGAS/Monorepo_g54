@@ -48,19 +48,19 @@ const createUser = async (email, password) => {
     try {
 
         const consulta = `INSERT INTO usuarios
-        values(
+        values( 
             DEFAULT,
             $1,
             $2
         ) RETURNING *`
 
         const passwordHash = await bcrypt.hash(password, 20)
-        console.log(passwordHash)
+
         const values = [email, passwordHash];
         const { rowCount } = await pool.query(consulta, values)
         if (!rowCount) throw { code: 400, message: "Bad request" }
     } catch (error) {
-        console.log(error)
+
         throw error
     }
 }
@@ -69,9 +69,14 @@ const verificarCredencialesHash = async (email, password) => {
     const consulta = "SELECT * FROM usuarios WHERE email = $1"
     const values = [email]
     const { rowCount, rows: [usuario] } = await pool.query(consulta, values)
-    const passVerified = await bcrypt.compare(password, usuario.password)
-    if (!rowCount) throw { code: 404, message: "No se encontró ningún usuario con estas credenciales" }
-    if (!passVerified) throw { code: 401, message: "Credenciales erroneas" }
+    if (usuario?.hasOwnProperty('password')) {
+
+        const passVerified = await bcrypt.compare(password, usuario?.password)
+        if (!rowCount) throw { code: 404, message: "No se encontró ningún usuario con estas credenciales" }
+        if (!passVerified) throw { code: 401, message: "Credenciales erroneas" }
+    } else {
+        throw { code: 404, message: "User not found" }
+    }
 }
 
 const getEvento = async (id) => {
@@ -79,10 +84,15 @@ const getEvento = async (id) => {
     return evento
 }
 
-const crearEvento = async ({ id, titulo, descripcion, fecha, lugar }) => {
-    await pool.query("INSERT INTO eventos VALUES($1, $2, $3, $4, $5)", [id, titulo, descripcion, fecha, lugar])
+const crearEvento = async ({ titulo, descripcion, fecha, lugar }) => {
+    try {
 
-    return await getEventos()
+        await pool.query("INSERT INTO eventos VALUES (DEFAULT, $1, $2, $3, $4)", [titulo, descripcion, fecha, lugar])
+
+        return await getEventos()
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const verifyIfExist = async (id) => {
